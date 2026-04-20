@@ -1,0 +1,88 @@
+name: CD — Build & Push Docker Images
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  build-and-push:
+    name: Build and Push Images
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        service:
+          - name: backend
+            context: ./backend
+            image: itsm-backend
+          - name: ai-service
+            context: ./ai-service
+            image: itsm-ai-service
+          - name: frontend
+            context: ./frontend
+            image: itsm-frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_PREFIX }}/${{ matrix.service.image }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha,prefix=sha-
+
+      - name: Build and push ${{ matrix.service.name }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to staging (mock)
+        run: |
+          echo "Deploying ITSM AI Agent to staging..."
+          echo "Images:"
+          echo "  - ${{ env.IMAGE_PREFIX }}/itsm-backend:main"
+          echo "  - ${{ env.IMAGE_PREFIX }}/itsm-ai-service:main"
+          echo "  - ${{ env.IMAGE_PREFIX }}/itsm-frontend:main"
+          echo ""
+          echo "Deployment complete!"
+          echo "Backend:  https://api-staging.your-domain.com"
+          echo "Frontend: https://staging.your-domain.com"

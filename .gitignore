@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+.next/
+.env
+.env.local
+*.env
+!*.env.example
+.DS_Store
+*.log
+coverage/
+.nyc_output/
+*.tsbuildinfo
+.turbo/
