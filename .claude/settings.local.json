@@ -3,7 +3,12 @@
     "allow": [
       "Bash(netstat -ano)",
       "Bash(awk '{print $5}')",
-      "Bash(xargs -I{} taskkill //PID {} //F)"
+      "Bash(xargs -I{} taskkill //PID {} //F)",
+      "Bash(cp -r \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/dashboard\" \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/\\(main\\)/dashboard\")",
+      "Bash(cp -r \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/employees\" \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/\\(main\\)/employees\")",
+      "Bash(cp -r \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/tickets\" \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/\\(main\\)/tickets\")",
+      "Bash(cp -r \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/integrations\" \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/\\(main\\)/integrations\")",
+      "Bash(cp -r \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/provisioning\" \"C:/Users/Mallesh N-3280/Desktop/Personal-project/istm-ai-agent/frontend/src/app/\\(main\\)/provisioning\")"
     ]
   }
 }

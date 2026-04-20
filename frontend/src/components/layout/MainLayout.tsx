@@ -11,14 +11,18 @@ export function MainLayout({ children }: MainLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+    <div className="flex min-h-screen bg-slate-950 text-slate-100">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <SidebarToggle onOpen={() => setSidebarOpen(true)} />
-      <main className="lg:ml-64 min-h-screen">
-        <div className="p-4 lg:p-8">
-          {children}
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+        {/* Mobile top bar */}
+        <div className="lg:hidden flex items-center h-14 px-4 border-b border-slate-800 bg-slate-900 shrink-0">
+          <SidebarToggle onOpen={() => setSidebarOpen(true)} />
+          <span className="ml-10 text-sm font-semibold text-white">ITSM AI Agent</span>
         </div>
-      </main>
+        <main className="flex-1 p-4 lg:p-8 overflow-x-hidden">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
